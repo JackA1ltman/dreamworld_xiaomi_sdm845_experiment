@@ -441,6 +441,9 @@ struct sock {
 	u8			sk_pacing_shift;
 	u16			sk_type;
 	u16			sk_protocol;
+#define SK_PROTOCOL_MAX U8_MAX
+	kmemcheck_bitfield_end(flags);
+
 	u16			sk_gso_max_segs;
 	unsigned long	        sk_lingertime;
 	struct proto		*sk_prot_creator;
