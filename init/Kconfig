@@ -1105,6 +1105,8 @@ config CGROUP_SCHEDTUNE
 	     configured with a different boost value
 
 	  Say N if unsure.
+	  
+source "kernel/cgroup_workingset/Kconfig"
 
 config PAGE_COUNTER
        bool
