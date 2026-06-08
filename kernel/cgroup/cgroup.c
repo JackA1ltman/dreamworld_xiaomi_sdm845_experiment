@@ -204,8 +204,6 @@ struct cgroup_namespace init_cgroup_ns = {
 static struct file_system_type cgroup2_fs_type;
 static struct cftype cgroup_base_files[];
 
-static int rebind_subsystems(struct cgroup_root *dst_root, u16 ss_mask);
-static void cgroup_lock_and_drain_offline(struct cgroup *cgrp);
 /* cgroup optional features */
 enum cgroup_opt_features {
 #ifdef CONFIG_PSI
@@ -6009,6 +6007,15 @@ static int __init cgroup_disable(char *str)
 			static_branch_disable(cgroup_subsys_enabled_key[i]);
 			pr_info("Disabling %s control group subsystem\n",
 				ss->name);
+		}
+
+		for (i = 0; i < OPT_FEATURE_COUNT; i++) {
+			if (strcmp(token, cgroup_opt_feature_names[i]))
+				continue;
+			cgroup_feature_disable_mask |= 1 << i;
+			pr_info("Disabling %s control group feature\n",
+				cgroup_opt_feature_names[i]);
+			break;
 		}
 	}
 	return 1;
